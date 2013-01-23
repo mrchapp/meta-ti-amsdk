@@ -55,11 +55,11 @@ do_compileconfigs () {
       # Context Save the regular 'defconfig'
       cp ${WORKDIR}/defconfig ${WORKDIR}/defconfig.save
 
-      for config in ${WORKDIR}/configs/* ; do
+      for alt_config in ${WORKDIR}/configs/* ; do
 
         # Copy in alternative config
         cd ${S}
-        cp $config ${WORKDIR}/defconfig
+        cp $alt_config ${WORKDIR}/defconfig
 
         # Enable config to be viewed on the target
         echo "CONFIG_IKCONFIG=y" >> ${WORKDIR}/defconfig
@@ -73,23 +73,23 @@ do_compileconfigs () {
 
         # Drop the resulting images in the deploy dir
         install -d ${DEPLOY_DIR_IMAGE}
-        install -m 0644 ${KERNEL_OUTPUT} ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGE_BASE_NAME}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $config).bin
+        install -m 0644 ${KERNEL_OUTPUT} ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGE_BASE_NAME}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $alt_config).bin
 
         if [ -d "${D}/lib" ]; then
-            tar --owner=root --group=root -cvzf ${DEPLOY_DIR_IMAGE}/${MODULES_IMAGE_BASE_NAME}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $config).tgz -C ${D} lib
+            tar --owner=root --group=root -cvzf ${DEPLOY_DIR_IMAGE}/${MODULES_IMAGE_BASE_NAME}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $alt_config).tgz -C ${D} lib
         fi
  
         # Install the final config alongside the images
-        cp .config ${DEPLOY_DIR_IMAGE}/config-${PV}-${PR}-${MACHINE}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $config).config
+        cp .config ${DEPLOY_DIR_IMAGE}/config-${PV}-${PR}-${MACHINE}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $alt_config).config
 
         # Create symlinks
         cd ${DEPLOY_DIR_IMAGE}
-        rm -f ${KERNEL_IMAGE_SYMLINK_NAME}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $config).bin
-        ln -sf ${KERNEL_IMAGE_BASE_NAME}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $config).bin ${KERNEL_IMAGE_SYMLINK_NAME}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $config).bin
-        rm -f modules-${MACHINE}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $config).tgz
-        ln -sf ${MODULES_IMAGE_BASE_NAME}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $config).tgz modules-${MACHINE}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $config).tgz
-        rm -f config-${MACHINE}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $config).config
-        ln -sf config-${PV}-${PR}-${MACHINE}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $config).config config-${MACHINE}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $config).config
+        rm -f ${KERNEL_IMAGE_SYMLINK_NAME}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $alt_config).bin
+        ln -sf ${KERNEL_IMAGE_BASE_NAME}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $alt_config).bin ${KERNEL_IMAGE_SYMLINK_NAME}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $alt_config).bin
+        rm -f modules-${MACHINE}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $alt_config).tgz
+        ln -sf ${MODULES_IMAGE_BASE_NAME}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $alt_config).tgz modules-${MACHINE}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $alt_config).tgz
+        rm -f config-${MACHINE}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $alt_config).config
+        ln -sf config-${PV}-${PR}-${MACHINE}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $alt_config).config config-${MACHINE}.${MULTI_CONFIG_BASE_SUFFIX}$(basename $alt_config).config
 
       done
 
