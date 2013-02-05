@@ -1,0 +1,30 @@
+From 95b0d0b3f16504fe35b7d76dcfa5f4141ddd0599 Mon Sep 17 00:00:00 2001
+From: "ShankarMurthy, Akshay" <akshay.s@ti.com>
+Date: Mon, 3 Dec 2012 11:00:48 +0530
+Subject: [PATCH 23/23] da830: select da830 config as default
+
+There are two boards in da830 da830-evm and da830-wifi-evm.
+Which are differentiated by macros "CONFIG_DA830" and
+"CONFIG_DA830_WL18XX", so da830 defconfig should contain
+"CONFIG_DA830=y" to support da830-evm.
+
+Signed-off-by: ShankarMurthy, Akshay <akshay.s@ti.com>
+---
+ arch/arm/configs/da830_omapl137_defconfig |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/configs/da830_omapl137_defconfig b/arch/arm/configs/da830_omapl137_defconfig
+index fc3a2d6..20e3e00 100644
+--- a/arch/arm/configs/da830_omapl137_defconfig
++++ b/arch/arm/configs/da830_omapl137_defconfig
+@@ -248,6 +248,7 @@ CONFIG_ARCH_DAVINCI_DA8XX=y
+ # DaVinci Board Type
+ #
+ CONFIG_MACH_DAVINCI_DA830_EVM=y
++CONFIG_DA830=y
+ CONFIG_DA830_UI_LCD=y
+ # CONFIG_DA830_UI_NAND is not set
+ CONFIG_DAVINCI_MUX=y
+-- 
+1.7.9.5
+

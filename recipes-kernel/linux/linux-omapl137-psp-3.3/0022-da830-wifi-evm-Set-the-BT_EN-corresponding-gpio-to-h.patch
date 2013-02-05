@@ -1,0 +1,43 @@
+From f8a7bbe25cccb7f3206337b67d1ce0748a99c2fd Mon Sep 17 00:00:00 2001
+From: "Shankarmurthy, Akshay" <akshay.s@ti.com>
+Date: Fri, 19 Oct 2012 11:28:42 +0530
+Subject: [PATCH 22/23] da830-wifi-evm: Set the "BT_EN" corresponding gpio to
+ high
+
+"BT_EN" pin of the bt module is connected to the gpio gpio2_2.
+This patch does the pinmux of this gpio and set it to high.
+
+Signed-off-by: Shankarmurthy, Akshay <akshay.s@ti.com>
+---
+ arch/arm/mach-davinci/board-da830-evm.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/arch/arm/mach-davinci/board-da830-evm.c b/arch/arm/mach-davinci/board-da830-evm.c
+index 2d3ffd4..7496843 100644
+--- a/arch/arm/mach-davinci/board-da830-evm.c
++++ b/arch/arm/mach-davinci/board-da830-evm.c
+@@ -41,6 +41,7 @@
+ 
+ #ifdef CONFIG_DA830_WL18XX
+ #define DA830_WIFI_NAND			GPIO_TO_PIN(1, 15)
++#define DA830_BT_EN			GPIO_TO_PIN(2, 2)
+ #define DA830_SPI_UART    		GPIO_TO_PIN(3, 10)
+ #define DA830_WLAN_EN			GPIO_TO_PIN(5, 7)
+ #define DA830_WLAN_IRQ			GPIO_TO_PIN(2, 12)
+@@ -837,6 +838,13 @@ static __init void da830_init_func(void)
+ 
+ 	if (!HAS_SPI) {
+ 		if(!ret) {
++			ret = davinci_cfg_reg(DA830_GPIO2_2);
++			if (ret)
++				pr_warning("gpio2_2 pinmux failed\n");
++			ret = gpio_request(DA830_BT_EN, "BT_EN");
++			if (ret)
++				pr_warning("gpio2_2 gpio request failed\n");
++			gpio_direction_output(DA830_BT_EN, 1);
+ 			davinci_cfg_reg_list(da830_uart0_pins);
+ 			gpio_direction_output(DA830_SPI_UART, 1);
+ 		}
+-- 
+1.7.9.5
+
