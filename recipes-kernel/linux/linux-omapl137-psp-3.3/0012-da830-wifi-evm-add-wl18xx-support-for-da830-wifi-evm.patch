@@ -1,0 +1,34 @@
+From fa1229678c3f91ed22afaec30e30a66557ea7568 Mon Sep 17 00:00:00 2001
+From: "Shankarmurthy, Akshay" <akshay.s@ti.com>
+Date: Mon, 15 Oct 2012 15:53:44 +0530
+Subject: [PATCH 12/23] da830-wifi-evm: add wl18xx support for da830-wifi-evm
+
+Signed-off-by: Shankarmurthy, Akshay <akshay.s@ti.com>
+---
+ arch/arm/mach-davinci/Kconfig |   10 ----------
+ 1 file changed, 10 deletions(-)
+
+diff --git a/arch/arm/mach-davinci/Kconfig b/arch/arm/mach-davinci/Kconfig
+index f8fab04..252641c 100644
+--- a/arch/arm/mach-davinci/Kconfig
++++ b/arch/arm/mach-davinci/Kconfig
+@@ -262,16 +262,6 @@ config DA850_WL12XX
+ 	  Say Y if you want to use a wl1271 expansion card connected to the
+ 	  AM18x EVM.
+ 
+-config DA830_WL18XX
+-	bool "DM830 wl18xx daughter board"
+-	depends on MACH_DAVINCI_DA830_EVM
+-	help
+-	  The wl18xx daughter card for da830-wifi EVMs is a combo wireless
+-	  connectivity add-on card, based on the Jorjin module with
+-	  Texas Instruments' wl18xx solution.
+-	  Say Y if you want to use a wl18xx expansion card connected to the
+-	  da830-wifi EVM.
+-
+ config GPIO_PCA953X
+ 	default MACH_DAVINCI_DA850_EVM
+ 
+-- 
+1.7.9.5
+

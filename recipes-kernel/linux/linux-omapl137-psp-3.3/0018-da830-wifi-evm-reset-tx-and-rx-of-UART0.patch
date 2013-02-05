@@ -1,0 +1,43 @@
+From 142d2ce35cd802a3933653fc2595c71fa5148267 Mon Sep 17 00:00:00 2001
+From: "Shankarmurthy, Akshay" <akshay.s@ti.com>
+Date: Tue, 16 Oct 2012 15:40:13 +0530
+Subject: [PATCH 18/23] da830-wifi-evm: reset tx and rx of UART0
+
+This patch resets and enables UART0 tx and rx and also sets it to
+free run mode. UART0 drives B.T in the da830-wifi-evm so this change
+makes UART0 accessible.
+
+UART0 can be tested as below,
+      1. cat /proc/interrupt,
+      UART0 irq number is 25 and corresponding number of interrupts should be more
+      than 0 (usally above 20). In 8250 driver, a quick test will happen to see whether
+      interrupt will increase when Tx irq is enabled. This will make
+      sure UART0 is enabled.
+      2. /sbin/getty -n  -l /bin/sh /dev/ttyS0 115200,
+      I have seen interrupt number increasing with this command.
+      This can be verified by doing telnet to the board and giving cat
+      /proc/interrupt. Interrupt number should be more than before
+      giving this command.
+
+Signed-off-by: Shankarmurthy, Akshay <akshay.s@ti.com>
+---
+ arch/arm/mach-davinci/serial.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-davinci/serial.c b/arch/arm/mach-davinci/serial.c
+index 20c6d29..8609030 100644
+--- a/arch/arm/mach-davinci/serial.c
++++ b/arch/arm/mach-davinci/serial.c
+@@ -108,7 +108,8 @@ int __init davinci_serial_init(struct davinci_uart_config *info)
+ 				pr_err("uart regs ioremap failed\n");
+ 		}
+ 
+-		if (p->membase && p->type != PORT_AR7)
++		if ((p->membase && p->type != PORT_AR7) ||
++			cpu_is_davinci_da830())
+ 			davinci_serial_reset(p);
+ 	}
+ 
+-- 
+1.7.9.5
+

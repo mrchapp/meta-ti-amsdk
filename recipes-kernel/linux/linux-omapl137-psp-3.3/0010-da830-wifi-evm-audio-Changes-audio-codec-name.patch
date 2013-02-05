@@ -1,0 +1,32 @@
+From 288a792edada799b6dd1ad465f2c39548ed8104e Mon Sep 17 00:00:00 2001
+From: "Shankarmurthy, Akshay" <akshay.s@ti.com>
+Date: Mon, 8 Oct 2012 11:06:15 +0530
+Subject: [PATCH 10/23] da830-wifi-evm: audio: Changes audio codec name
+
+I2c-0 is used on DA830-evm and i2c-1 is used on the Da830-WIFI-EVM so
+codec name should be changed accordingly to support both.
+
+Signed-off-by: Shankarmurthy, Akshay <akshay.s@ti.com>
+---
+ sound/soc/davinci/davinci-evm.c |    4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/sound/soc/davinci/davinci-evm.c b/sound/soc/davinci/davinci-evm.c
+index 10a2d8c..bc602b2 100644
+--- a/sound/soc/davinci/davinci-evm.c
++++ b/sound/soc/davinci/davinci-evm.c
+@@ -222,7 +222,11 @@ static struct snd_soc_dai_link da830_evm_dai = {
+ 	.stream_name = "AIC3X",
+ 	.cpu_dai_name = "davinci-mcasp.1",
+ 	.codec_dai_name = "tlv320aic3x-hifi",
++#ifdef CONFIG_DA830_WL18XX
++	.codec_name = "tlv320aic3x-codec.2-0018",
++#else
+ 	.codec_name = "tlv320aic3x-codec.1-0018",
++#endif
+ 	.platform_name = "davinci-pcm-audio",
+ 	.init = evm_aic3x_init,
+ 	.ops = &evm_ops,
+-- 
+1.7.9.5
+

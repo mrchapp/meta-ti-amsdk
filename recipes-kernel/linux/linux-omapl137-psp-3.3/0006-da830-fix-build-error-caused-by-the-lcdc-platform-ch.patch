@@ -1,0 +1,31 @@
+From 680e48e53907ea86f12a86a21872cf5b6f49999c Mon Sep 17 00:00:00 2001
+From: "Shankarmurthy, Akshay" <akshay.s@ti.com>
+Date: Mon, 13 Aug 2012 12:59:07 +0530
+Subject: [PATCH 06/23] da830: fix build error caused by the lcdc platform
+ change
+
+Commit id ff9962c77fc3d9972c79c404bd09d2125f93f797 uses
+"da8xx_pinmux_setup" pinmux function, which was changed to
+"davinci_cfg_reg_list" in the LINUX3.3 kernel.
+
+Signed-off-by: Shankarmurthy, Akshay <akshay.s@ti.com>
+---
+ arch/arm/mach-davinci/board-da830-evm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-davinci/board-da830-evm.c b/arch/arm/mach-davinci/board-da830-evm.c
+index 69144c0..52823df 100644
+--- a/arch/arm/mach-davinci/board-da830-evm.c
++++ b/arch/arm/mach-davinci/board-da830-evm.c
+@@ -423,7 +423,7 @@ static inline void da830_evm_init_lcdc(int mux_mode)
+ 		pr_warning("da830_evm_init: lcd hw init failed: %d\n", ret);
+ 
+ #if !defined(CONFIG_FB_DA8XX) && !defined(CONFIG_FB_DA8XX_MODULE)
+-	ret = da8xx_pinmux_setup(da830_evm_lcdc_pins);
++	ret = davinci_cfg_reg_list(da830_evm_lcdc_pins);
+ 	if (ret)
+ 		pr_warning("da830_evm_init:evm lcd mux setup failed: %d\n",
+ 				ret);
+-- 
+1.7.9.5
+
