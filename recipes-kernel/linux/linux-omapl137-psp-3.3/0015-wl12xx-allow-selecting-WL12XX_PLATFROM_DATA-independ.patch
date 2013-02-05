@@ -1,0 +1,28 @@
+From 40111ce2ff9b609c37b5b079b30507b6deef4e64 Mon Sep 17 00:00:00 2001
+From: Eyal Reizer <eyalr@ti.com>
+Date: Wed, 12 Sep 2012 14:54:20 +0300
+Subject: [PATCH 15/23] wl12xx: allow selecting WL12XX_PLATFROM_DATA
+ independently
+
+allow selecting WL12XX_PLATFROM_DATA independently of whether mac80211
+and wl12xx drivers are selected in the kernel. Needed for building
+with compat-wireless
+
+Signed-off-by: Eyal Reizer <eyalr@ti.com>
+---
+ drivers/net/wireless/wl12xx/Kconfig |    1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/net/wireless/wl12xx/Kconfig b/drivers/net/wireless/wl12xx/Kconfig
+index af08c86..65e65fa 100644
+--- a/drivers/net/wireless/wl12xx/Kconfig
++++ b/drivers/net/wireless/wl12xx/Kconfig
+@@ -44,5 +44,4 @@ config WL12XX_SDIO
+ 
+ config WL12XX_PLATFORM_DATA
+ 	bool
+-	depends on WL12XX_SDIO != n || WL1251_SDIO != n
+ 	default y
+-- 
+1.7.9.5
+

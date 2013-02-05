@@ -1,0 +1,44 @@
+From 4b7d0d35269e1b6c124df9a25318355b420d01cd Mon Sep 17 00:00:00 2001
+From: "Shankarmurthy, Akshay" <akshay.s@ti.com>
+Date: Fri, 5 Oct 2012 15:26:13 +0530
+Subject: [PATCH 08/23] da830-wifi-evm: Adds support for da830 wifi evm in
+ Kconfig
+
+This patch provides config to choose da830 or da830-wifi-evm.
+
+Signed-off-by: Shankarmurthy, Akshay <akshay.s@ti.com>
+---
+ arch/arm/mach-davinci/Kconfig |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/arch/arm/mach-davinci/Kconfig b/arch/arm/mach-davinci/Kconfig
+index ae6e83d..252641c 100644
+--- a/arch/arm/mach-davinci/Kconfig
++++ b/arch/arm/mach-davinci/Kconfig
+@@ -145,6 +145,23 @@ config MACH_DAVINCI_DA830_EVM
+ 	help
+ 	  Say Y here to select the TI DA830/OMAP-L137/AM17x Evaluation Module.
+ 
++ choice
++	prompt "Select DA830 or DA830-WIFI-EVM"
++	depends on MACH_DAVINCI_DA830_EVM
++	help
++	  Choose version of the da830 board (default is DA830-WIFI-EVM)
++
++config DA830_WL18XX
++	bool "DA830 WIFI EVM"
++	help
++	  Select this option if you want to build for da830 wifi evm (default)
++
++config DA830
++	bool "DA830 EVM"
++	help
++	  Select this option if you want to build for da830 evm
++endchoice
++
+ choice
+ 	prompt "Select DA830/OMAP-L137/AM17x UI board peripheral"
+ 	depends on MACH_DAVINCI_DA830_EVM
+-- 
+1.7.9.5
+

@@ -1,0 +1,50 @@
+From eaf47d51a84618354c2f813921ff656877758988 Mon Sep 17 00:00:00 2001
+From: Sudhakar Rajashekhara <sudhakar.raj@ti.com>
+Date: Fri, 10 Aug 2012 14:47:50 +0530
+Subject: [PATCH 05/23] da830/omap-l137: Configure LCD_AC_ENB_CS pin as LCD
+ for Char LCD
+
+configured the LCD_AC_ENB_CS pin as GPIO for Graphical
+LCD to work on AM1707 parts. But this had caused Character
+LCD not to work which requires the LCD_AC_ENB_CS pin to be
+functioning as LCD. This patch configures the LCD_AC_ENB_CS
+pin as LCD incase Character LCD is enabled.
+
+Signed-off-by: Sudhakar Rajashekhara <sudhakar.raj@ti.com>
+---
+ arch/arm/mach-davinci/board-da830-evm.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/arch/arm/mach-davinci/board-da830-evm.c b/arch/arm/mach-davinci/board-da830-evm.c
+index 87bcab9..69144c0 100644
+--- a/arch/arm/mach-davinci/board-da830-evm.c
++++ b/arch/arm/mach-davinci/board-da830-evm.c
+@@ -405,6 +405,11 @@ static int da830_lcd_hw_init(void)
+ 	return 0;
+ }
+ 
++static const short da830_evm_lcdc_pins[] = {
++	DA830_NLCD_AC_ENB_CS,
++	-1
++};
++
+ static inline void da830_evm_init_lcdc(int mux_mode)
+ {
+ 	int ret;
+@@ -417,6 +422,13 @@ static inline void da830_evm_init_lcdc(int mux_mode)
+ 	if (ret)
+ 		pr_warning("da830_evm_init: lcd hw init failed: %d\n", ret);
+ 
++#if !defined(CONFIG_FB_DA8XX) && !defined(CONFIG_FB_DA8XX_MODULE)
++	ret = da8xx_pinmux_setup(da830_evm_lcdc_pins);
++	if (ret)
++		pr_warning("da830_evm_init:evm lcd mux setup failed: %d\n",
++				ret);
++#endif
++
+ 	ret = da8xx_register_lcdc(&sharp_lcd035q3dg01_pdata);
+ 	if (ret)
+ 		pr_warning("da830_evm_init: lcd setup failed: %d\n", ret);
+-- 
+1.7.9.5
+
