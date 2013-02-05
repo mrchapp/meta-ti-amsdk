@@ -49,6 +49,10 @@ SRC_URI_omapl138 = "git://arago-project.org/git/projects/u-boot-omapl1.git;proto
 SRCREV_pn-${PN}_omapl138  = "5f16b8551b125f16cd8d58f278cb25b94272fd9f"
 PV_omapl138      = "2009.11+${PR}+gitr${SRCREV}"
 
+SRC_URI_omapl137 = "git://arago-project.org/git/projects/u-boot-omapl1.git;protocol=http"
+SRCREV_pn-${PN}_omapl137  = "5f16b8551b125f16cd8d58f278cb25b94272fd9f"
+PV_omapl137      = "2009.11+${PR}+gitr${SRCREV}"
+
 # hawkboard - master branch (hawk still .07beta)
 SRC_URI_hawkboard          = "git://arago-project.org/git/people/sekhar/u-boot-omapl1.git;protocol=git;branch=master"
 SRC_URI_hawkboard         += "file://dont-inline-weak-symbols2.patch"
