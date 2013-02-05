@@ -1,0 +1,31 @@
+From 6e3debe040eca369e17b0fa92f285a17f4bc2006 Mon Sep 17 00:00:00 2001
+From: Sudhakar Rajashekhara <sudhakar.raj@ti.com>
+Date: Thu, 22 Oct 2009 15:50:59 +0530
+Subject: [PATCH 03/23] davinci: Add platform data for da830/omap-l137 char
+ lcd
+
+This patch adds the platform data for the Hantronix
+character LCD panel found on DA830/OMAP-L137 EVM.
+
+Signed-off-by: Sudhakar Rajashekhara <sudhakar.raj@ti.com>
+---
+ arch/arm/mach-davinci/devices-da8xx.c |    3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/arm/mach-davinci/devices-da8xx.c b/arch/arm/mach-davinci/devices-da8xx.c
+index 9f9329c..2a3d12f 100644
+--- a/arch/arm/mach-davinci/devices-da8xx.c
++++ b/arch/arm/mach-davinci/devices-da8xx.c
+@@ -663,6 +663,9 @@ static struct platform_device da8xx_lcdc_device = {
+ int __init da8xx_register_lcdc(struct da8xx_lcdc_platform_data *pdata)
+ {
+ #if !defined(CONFIG_FB_DA8XX) && !defined(CONFIG_FB_DA8XX_MODULE)
++	if (cpu_is_davinci_da830())
++		da8xx_evm_clcd_pdata.version = CONFIG_SPACE_0;
++
+ 	da8xx_lcdc_device.dev.platform_data = &da8xx_evm_clcd_pdata;
+ #else
+ 	da8xx_lcdc_device.dev.platform_data = pdata;
+-- 
+1.7.9.5
+

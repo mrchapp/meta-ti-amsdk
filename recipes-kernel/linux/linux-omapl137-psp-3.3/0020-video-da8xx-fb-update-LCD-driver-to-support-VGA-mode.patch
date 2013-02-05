@@ -1,0 +1,94 @@
+From e66b5f5dbd5eefd50a06c4ab382101106a9d59f1 Mon Sep 17 00:00:00 2001
+From: "Veer, Rajkumar" <rajkumar.veer@ti.com>
+Date: Thu, 18 Oct 2012 18:39:48 +0530
+Subject: [PATCH 20/23] video: da8xx-fb: update LCD driver to support VGA mode
+
+This patch adds support for VGA mode(640x480 @ 60Hz) in LCD driver.
+
+Signed-off-by: Veer, Rajkumar <rajkumar.veer@ti.com>
+---
+ drivers/video/da8xx-fb.c |   26 +++++++++++++++++++++++---
+ include/video/da8xx-fb.h |    3 ++-
+ 2 files changed, 25 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/video/da8xx-fb.c b/drivers/video/da8xx-fb.c
+index b63765b..3b51482 100644
+--- a/drivers/video/da8xx-fb.c
++++ b/drivers/video/da8xx-fb.c
+@@ -124,10 +124,17 @@
+ 
+ #define WSI_TIMEOUT	50
+ #define PALETTE_SIZE	256
++#ifdef CONFIG_GLCD_DVI_VGA
++#define LEFT_MARGIN	142
++#define RIGHT_MARGIN	2
++#define UPPER_MARGIN	44
++#define LOWER_MARGIN	2
++#else
+ #define LEFT_MARGIN	64
+ #define RIGHT_MARGIN	64
+ #define UPPER_MARGIN	32
+ #define LOWER_MARGIN	32
++#endif
+ 
+ static resource_size_t da8xx_fb_reg_base;
+ static struct resource *lcdc_regs;
+@@ -247,6 +254,20 @@ static struct da8xx_panel known_lcd_panels[] = {
+ 		.pxl_clk = 7833600,
+ 		.invert_pxl_clk = 0,
+ 	},
++	/* DVI VGA ADAPTER */
++	[2] = {
++		.name = "DVI_VGA_ADAPTER",
++		.width = 640,
++		.height = 480,
++		.hfp = 142,
++		.hbp = 2,
++		.hsw = 9,
++		.vfp = 44,
++		.vbp = 2,
++		.vsw = 0,
++		.pxl_clk = 25000000,
++		.invert_pxl_clk = 1,
++	},
+ };
+ 
+ /* Enable the Raster Engine of the LCD Controller */
+@@ -666,7 +687,8 @@ static int lcd_init(struct da8xx_fb_par *par, const struct lcd_ctrl_config *cfg,
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	if (QVGA != cfg->p_disp_panel->panel_type)
++	if ((QVGA != cfg->p_disp_panel->panel_type) &&
++			(VGA != cfg->p_disp_panel->panel_type))
+ 		return -EINVAL;
+ 
+ 	if (cfg->bpp <= cfg->p_disp_panel->max_bpp &&
+@@ -756,10 +778,8 @@ static irqreturn_t lcdc_irq_handler_rev01(int irq, void *arg)
+ 	if ((stat & LCD_SYNC_LOST) && (stat & LCD_FIFO_UNDERFLOW)) {
+ 		printk(KERN_ERR "LCDC sync lost or underflow error occured\n");
+ 		lcd_disable_raster();
+-		clk_disable(par->lcdc_clk);
+ 		lcdc_write(stat, LCD_STAT_REG);
+ 		lcd_enable_raster();
+-		clk_enable(par->lcdc_clk);
+ 	} else if (stat & LCD_PL_LOAD_DONE) {
+ 		/*
+ 		 * Must disable raster before changing state of any control bit.
+diff --git a/include/video/da8xx-fb.h b/include/video/da8xx-fb.h
+index 04fadd1..4eefe33 100644
+--- a/include/video/da8xx-fb.h
++++ b/include/video/da8xx-fb.h
+@@ -13,7 +13,8 @@
+ #define DA8XX_FB_H
+ 
+ enum panel_type {
+-	QVGA = 0
++	QVGA = 0,
++	VGA,
+ };
+ 
+ enum panel_shade {
+-- 
+1.7.9.5
+

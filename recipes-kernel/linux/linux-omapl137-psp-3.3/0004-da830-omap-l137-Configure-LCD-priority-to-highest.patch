@@ -1,0 +1,66 @@
+From ce49e519025b28a17679f614679fba06c2b4da1a Mon Sep 17 00:00:00 2001
+From: Sekhar Nori <nsekhar@ti.com>
+Date: Fri, 10 Aug 2012 14:31:24 +0530
+Subject: [PATCH 04/23] da830/omap-l137: Configure LCD priority to highest
+
+Configure the LCDC priority to the highest to ensure that
+the throughput/latency requirements for the LCDC are met.
+---
+ arch/arm/mach-davinci/board-da830-evm.c    |   21 +++++++++++++++++++++
+ arch/arm/mach-davinci/include/mach/da8xx.h |    1 +
+ 2 files changed, 22 insertions(+)
+
+diff --git a/arch/arm/mach-davinci/board-da830-evm.c b/arch/arm/mach-davinci/board-da830-evm.c
+index 28bcd0f..87bcab9 100644
+--- a/arch/arm/mach-davinci/board-da830-evm.c
++++ b/arch/arm/mach-davinci/board-da830-evm.c
+@@ -387,6 +387,24 @@ static inline void da830_evm_init_nand(int mux_mode) { }
+ #endif
+ 
+ #ifdef CONFIG_DA830_UI_LCD
++static int da830_lcd_hw_init(void)
++{
++	void __iomem *cfg_mstpri2_base;
++	u32 val;
++
++	/*
++	 * Reconfigure the LCDC priority to the highest to ensure that
++	 * the throughput/latency requirements for the LCDC are met.
++	 */
++	cfg_mstpri2_base = DA8XX_SYSCFG0_VIRT(DA8XX_MSTPRI2_REG);
++
++	val = __raw_readl(cfg_mstpri2_base);
++	val &= 0x0fffffff;
++	__raw_writel(val, cfg_mstpri2_base);
++
++	return 0;
++}
++
+ static inline void da830_evm_init_lcdc(int mux_mode)
+ {
+ 	int ret;
+@@ -395,6 +413,9 @@ static inline void da830_evm_init_lcdc(int mux_mode)
+ 	if (ret)
+ 		pr_warning("da830_evm_init: lcdcntl mux setup failed: %d\n",
+ 				ret);
++	ret = da830_lcd_hw_init();
++	if (ret)
++		pr_warning("da830_evm_init: lcd hw init failed: %d\n", ret);
+ 
+ 	ret = da8xx_register_lcdc(&sharp_lcd035q3dg01_pdata);
+ 	if (ret)
+diff --git a/arch/arm/mach-davinci/include/mach/da8xx.h b/arch/arm/mach-davinci/include/mach/da8xx.h
+index ed8425b..5928a34 100644
+--- a/arch/arm/mach-davinci/include/mach/da8xx.h
++++ b/arch/arm/mach-davinci/include/mach/da8xx.h
+@@ -57,6 +57,7 @@ extern unsigned int da850_max_speed;
+ #define DA8XX_SYSCFG0_VIRT(x)	(da8xx_syscfg0_base + (x))
+ #define DA8XX_JTAG_ID_REG	0x18
+ #define DA8XX_CHIPREV_ID_REG	0x24
++#define DA8XX_MSTPRI2_REG	0x118
+ #define DA8XX_CFGCHIP0_REG	0x17c
+ #define DA8XX_CFGCHIP1_REG      0x180
+ #define DA8XX_CFGCHIP2_REG	0x184
+-- 
+1.7.9.5
+
