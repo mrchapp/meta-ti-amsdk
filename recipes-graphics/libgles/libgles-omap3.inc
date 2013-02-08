@@ -13,7 +13,6 @@ DEPENDS = "${@base_contains('DISTRO_FEATURES', 'x11', '${X11DEPENDS}', '', d)}"
 export SUPPORT_XORG ?= "${@base_contains('DISTRO_FEATURES', 'x11', '1', '0', d)}"
 PVR_INIT ?= "pvrsrvinit"
 
-
 PROVIDES += "virtual/egl virtual/libgles1 virtual/libgles2"
 
 RREPLACES_${PN} = "libegl libgles1 libgles2"
@@ -241,7 +240,6 @@ do_install () {
 	install -m 0755 ${S}/demos/raw/* ${D}${bindir}/SGX/demos/Raw/
 	install -d ${D}${bindir}/SGX/trainingcourses/Raw 2>/dev/null || true
 	install -m 0755 ${S}/trainingcourses/raw/* ${D}${bindir}/SGX/trainingcourses/Raw/ 2>/dev/null || true
-
 
 
 	# Delete objects and linker scripts hidden between the headers
