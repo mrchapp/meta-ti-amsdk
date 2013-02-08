@@ -6,7 +6,11 @@ TI_BIN_UNPK_CMDS="Y: qY:workdir:Y"
 require ../../recipes-ti/includes/ti-eula-unpack.inc
 
 SGXPV = "4_08_00_01"
+<<<<<<< HEAD
 IMGPV = "1.7.867897"
+=======
+IMGPV = "1.9.2139099"
+>>>>>>> danny-upstream
 BINFILE = "Graphics_SDK_setuplinux_${SGXPV}.bin"
 
 inherit module

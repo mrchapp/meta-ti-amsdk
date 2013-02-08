@@ -17,7 +17,11 @@ PVR_INIT = "pvrsrvctl"
 # see libgles-omap3.inc for detailed installation instructions
 
 SGXPV = "4_08_00_01"
+<<<<<<< HEAD
 IMGPV = "1.7.867897"
+=======
+IMGPV = "1.9.2139099"
+>>>>>>> danny-upstream
 BINFILE = "Graphics_SDK_setuplinux_${SGXPV}.bin"
 TI_BIN_UNPK_WDEXT := "/Graphics_SDK_${SGXPV}"
 SRC_URI = "http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/gfxsdk/${SGXPV}/exports/${BINFILE} \
