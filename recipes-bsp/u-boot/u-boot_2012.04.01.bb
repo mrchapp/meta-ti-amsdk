@@ -1,7 +1,7 @@
+# Use the version of u-boot.inc in oe-core not the meta-ti version
 require ${COREBASE}/meta/recipes-bsp/u-boot/u-boot.inc
 
 DESCRIPTION = "u-boot bootloader for ARM MPU devices"
-# Use the version of u-boot.inc in oe-core not the meta-ti version
 
 LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://COPYING;md5=1707d6db1d42237583f50183a5651ecb"
