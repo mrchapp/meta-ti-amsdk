@@ -3,8 +3,6 @@ HOMEPAGE = "http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/x
 LICENSE = "GPLv2"
 SECTION = "devel"
 
-LIC_FILES_CHKSUM = "file://xdais_6_26_01_03_manifest.html;md5=a5a675d49db2f658bb98746ec80cda4e"
-
 require ../includes/ti-paths.inc
 require ../includes/ti-staging.inc
 
