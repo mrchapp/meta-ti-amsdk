@@ -54,7 +54,8 @@ SRC_URI += " \
     file://0003-omap3_evm_defconfig-add-WLAN-config-options.patch \
 "
 
-# Enable clock pad register in mt9t111 sensor driver. This fixes the issue where sensor sync pulses were not generated during first loopback after boot-up.
+# Enable clock pad register in mt9t111 sensor driver. This fixes the issue where
+# sensor sync pulses were not generated during first loopback after boot-up.
 SRC_URI += " \
     file://0001-mt9t111-enable-clock-pad-register-in-configuration.patch \
 "
