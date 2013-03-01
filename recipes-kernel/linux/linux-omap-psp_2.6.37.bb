@@ -1,10 +1,18 @@
-require linux.inc
-
 DESCRIPTION = "Linux kernel for OMAP3 EVM from PSP, based on linux-omap3 kernel"
+SECTION = "kernel"
+LICENSE = "GPLv2"
+LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
+
+inherit kernel
 
 COMPATIBLE_MACHINE = "omap3"
 
-SRCREV= "20c003f2f024d9f50f59edf9f1b8f5f035fb15b8"
+# The main PR is now using MACHINE_KERNEL_PR, for omap3 devices
+# see conf/machine/include/omap3.inc
+MACHINE_KERNEL_PR_append = "a+gitr${SRCREV}"
+
+# SRCREV corresponds to tag v2.6.37_OMAPPSP_04.02.00.07
+SRCREV= "adcd067326836777c049e3cb32a5b7d9d401fc31"
 
 SRC_URI = "git://arago-project.org/git/projects/linux-omap3.git;protocol=git \
            file://defconfig"
