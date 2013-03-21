@@ -31,7 +31,7 @@ SRC_URI = "http://software-dl.ti.com/dsps/dsps_public_sw/${PV_DL_PATH}/dsplink_l
            file://ti-dsplink-examples-unloadmodules.sh "
 
 DEPENDS = "ti-sysbios ti-xdctools ti-cgt6x"
-DEPENDS += "virtual/kernel perl-native" 
+DEPENDS += "virtual/kernel:do_populate_sysroot perl-native"
 
 # SOC_FAMILY configuration
 
