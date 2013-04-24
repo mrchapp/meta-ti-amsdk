@@ -11,12 +11,12 @@ LIC_FILES_CHKSUM = "file://dsplink/doc/gpl_2.0.pdf;md5=70996be607b61df78ce46093f
 # TODO :: Unset required since LDFLAGS gets picked up and used incorrectly - investigate
 # TODO :: Do we need to pass so many variables to each make step?
 
-inherit module
+inherit module kernel-module-split
 
 require ../includes/ti-paths.inc
 require ../includes/ti-staging.inc
 
-PROVIDES = "ti-dsplink-module"
+PROVIDES = "kernel-module-dsplinkk"
 PROVIDES += "ti-dsplink-examples"
 
 # This package builds a kernel module, use kernel PR as base and append a local version
@@ -185,11 +185,12 @@ do_install () {
 
 }
 
-PACKAGES =+ "ti-dsplink-module"
-FILES_ti-dsplink-module = "/lib/modules/${KERNEL_VERSION}/kernel/drivers/dsp/dsplinkk.ko" 
-RDEPENDS_ti-dsplink-module += "update-modules"
+PACKAGES =+ "kernel-module-dsplinkk"
+FILES_kernel-module-dsplinkk = "/lib/modules/${KERNEL_VERSION}/kernel/drivers/dsp/dsplinkk.ko"
+#DEPENDS_kernel-module-dsplinkk += "virtual/kernel"
+RDEPENDS_kernel-module-dsplinkk += "update-modules"
 
-pkg_postinst_ti-dsplink-module () {
+pkg_postinst_kernel-module-dsplinkk () {
 #!/bin/sh
 if [ -n "$D" ]; then
 	exit 1
@@ -199,13 +200,15 @@ depmod -a
 update-modules || true
 }
 
-pkg_postrm_ti-dsplink-module () {
+pkg_postrm_kernel-module-dsplinkk () {
 #!/bin/sh
 update-modules || true
 }
 
 PACKAGES += "ti-dsplink-examples"
-RDEPENDS_ti-dsplink-examples_append = " ti-dsplink-module"
+RDEPENDS_ti-dsplink-examples_append = " kernel-module-dsplinkk"
 RDEPENDS_ti-dsplink-examples_append_omap3 += " ti-lpm-module ti-lpm-utils"
 FILES_ti-dsplink-examples = "${installdir}/ti-dsplink-examples/*"
 INSANE_SKIP_ti-dsplink-examples = "1"
+
+module_autoload_dsplinkk = "dsplinkk"
