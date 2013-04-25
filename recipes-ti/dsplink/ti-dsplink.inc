@@ -31,7 +31,7 @@ SRC_URI = "http://software-dl.ti.com/dsps/dsps_public_sw/${PV_DL_PATH}/dsplink_l
            file://ti-dsplink-examples-unloadmodules.sh "
 
 DEPENDS = "ti-sysbios ti-xdctools ti-cgt6x"
-DEPENDS += "virtual/kernel:do_populate_sysroot perl-native"
+DEPENDS += "virtual/kernel perl-native"
 
 # SOC_FAMILY configuration
 
@@ -88,6 +88,7 @@ do_prepsources () {
 
 addtask prepsources after do_configure before do_compile
 
+do_make_scripts[depends] = "virtual/kernel:do_populate_sysroot"
 do_compile() {
     # TODO :: KERNEL_CC, should use for kernel module build?
     # TODO :: Need to understand why OBJDUMP is required for kernel module
